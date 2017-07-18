@@ -1,9 +1,14 @@
 # Commands file for VoidTeleport
 # Created by KevinNovak
 
-tp:
+spawn:
+- 'spawn'
 - 'tp'
 - 'teleport'
+
+random:
+- 'random'
+- 'rand'
 - 'rtp'
 - 'randtp'
 - 'randomtp'

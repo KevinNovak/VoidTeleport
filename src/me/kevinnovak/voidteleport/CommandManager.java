@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class CommandManager {
 	public VoidTeleport plugin;
 	
-	public List<String> tpCommands;
+	public List<String> spawnCommands, randomCommands;
 	
 	public CommandManager(VoidTeleport plugin) {
 		this.plugin = plugin;
@@ -23,6 +23,7 @@ public class CommandManager {
 		this.plugin.log("Loading commands file.");
         YamlConfiguration commandsData = YamlConfiguration.loadConfiguration(commandsFile);
         
-    	this.tpCommands = commandsData.getStringList("tp");
+    	this.spawnCommands = commandsData.getStringList("spawn");
+    	this.randomCommands = commandsData.getStringList("random");
 	}
 }

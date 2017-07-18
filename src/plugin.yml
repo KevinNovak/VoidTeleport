@@ -11,6 +11,9 @@ commands:
         aliases: [voidteleport]
 
 permissions:
-    voidteleport.tp:
-        description: Teleport to the void spawn location.
-        default: true
+    voidteleport.command.spawn:
+        description: Teleport to the worlds spawn location.
+        default: op
+    voidteleport.command.random:
+        description: Teleport to a random location in the world.
+        default: op

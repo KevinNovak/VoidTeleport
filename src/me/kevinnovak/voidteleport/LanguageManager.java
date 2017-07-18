@@ -10,7 +10,7 @@ public class LanguageManager {
 	
 	public String consolePrefix = "[VoidTeleport] ";
 	public String noPermission;
-	public String commandMenuHeader, commandMenuCommandTp, commandMenuMorePages, commandMenuNoCommands, commandMenuFooter;
+	public String commandMenuHeader, commandMenuCommandSpawn, commandMenuCommandRandom, commandMenuMorePages, commandMenuNoCommands, commandMenuFooter;
 	
 	public LanguageManager(VoidTeleport plugin) {
 		this.plugin = plugin;
@@ -28,7 +28,8 @@ public class LanguageManager {
         this.noPermission = colorConv.convert(languageData.getString("noPermission"));
         
     	this.commandMenuHeader = colorConv.convert(languageData.getString("commandMenu.header"));
-    	this.commandMenuCommandTp = colorConv.convert(languageData.getString("commandMenu.command.tp"));
+    	this.commandMenuCommandSpawn = colorConv.convert(languageData.getString("commandMenu.command.spawn"));
+    	this.commandMenuCommandRandom = colorConv.convert(languageData.getString("commandMenu.command.random"));
     	this.commandMenuMorePages = colorConv.convert(languageData.getString("commandMenu.morePages"));
     	this.commandMenuNoCommands = colorConv.convert(languageData.getString("commandMenu.noCommands"));
     	this.commandMenuFooter = colorConv.convert(languageData.getString("commandMenu.footer"));

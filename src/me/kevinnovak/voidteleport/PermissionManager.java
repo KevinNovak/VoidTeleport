@@ -4,7 +4,8 @@ public class PermissionManager {
 	public String base = "voidteleport.";
 	public String command = "command.";
 	
-	public String tp = base + command + "tp";
+	public String spawn = base + command + "spawn";
+	public String random = base + command + "random";
 	
 	public PermissionManager() {
 		

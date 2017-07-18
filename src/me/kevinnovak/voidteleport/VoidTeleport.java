@@ -76,12 +76,27 @@ public class VoidTeleport extends JavaPlugin implements Listener{
         		commandMenu.print(player, 1);
             	return true;
             } else if (args.length > 0) {
-            	for (String tpCommand : cmdMan.tpCommands) {
-            		if (args[0].equalsIgnoreCase(tpCommand)) {
-            			if (player.hasPermission(perm.tp)) {
+            	for (String spawnCommand : cmdMan.spawnCommands) {
+            		if (args[0].equalsIgnoreCase(spawnCommand)) {
+            			if (player.hasPermission(perm.spawn)) {
             				
             				// TO-DO: teleport player
-            				player.sendMessage("TELEPORTED");
+            				player.sendMessage("Teleported to Spawn");
+            				
+                    		return true;
+            			} else {
+            				player.sendMessage(langMan.noPermission);
+            				return true;
+            			}
+                	}
+            	}
+            	
+            	for (String randomCommand : cmdMan.randomCommands) {
+            		if (args[0].equalsIgnoreCase(randomCommand)) {
+            			if (player.hasPermission(perm.random)) {
+            				
+            				// TO-DO: teleport player
+            				player.sendMessage("Teleported to Random");
             				
                     		return true;
             			} else {

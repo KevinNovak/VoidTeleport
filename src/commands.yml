@@ -1,0 +1,10 @@
+# Commands file for VoidTeleport
+# Created by KevinNovak
+
+tp:
+- 'tp'
+- 'teleport'
+- 'rtp'
+- 'randtp'
+- 'randomtp'
+- 'randomteleport'

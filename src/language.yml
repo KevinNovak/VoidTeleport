@@ -1,0 +1,12 @@
+# Language file for VoidTeleport
+# Created by KevinNovak
+
+noPermission: '&cYou are not permitted to do this!'
+
+commandMenu:
+  header: ' &e-------- &6VoidTeleport  &e- &6Commands &e--------'
+  command:
+    tp: '&b/vtp tp &7- Teleport to the void spawn location.'
+  morePages: ' &7Type &6/vtp {PAGE} &7for more.'
+  noCommands: ' &7You are not allowed to use commands.'
+  footer: ' &e----------------------------------------'

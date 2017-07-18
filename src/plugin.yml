@@ -1,0 +1,16 @@
+name: VoidTeleport
+version: 1.0.0
+main: me.kevinnovak.voidteleport.VoidTeleport
+author: KevinNovak
+description: Teleport players out of the void!
+
+commands:
+    vtp:
+        usage: /<command>
+        description: List all VoidTeleport commands.
+        aliases: [voidteleport]
+
+permissions:
+    voidteleport.tp:
+        description: Teleport to the void spawn location.
+        default: true

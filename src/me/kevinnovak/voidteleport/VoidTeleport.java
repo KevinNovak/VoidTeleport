@@ -15,9 +15,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 public class VoidTeleport extends JavaPlugin implements Listener{
 	// Plugin
@@ -168,6 +173,27 @@ public class VoidTeleport extends JavaPlugin implements Listener{
         }
         
 		return false;
+    }
+    
+    @EventHandler
+    public void onEntityDamageEvent(EntityDamageEvent e) {
+    	if (e.getCause().equals(DamageCause.VOID)) {
+        	Entity damagedEntity = e.getEntity();
+    	    if (damagedEntity instanceof Player) {
+    		    Player player = (Player) damagedEntity;
+    		    World playerWorld = player.getLocation().getWorld();
+		    	for (VoidWorld voidWorld : this.voidWorlds) {
+		    		if (voidWorld.getWorld().equals(playerWorld)) {
+		    			// cancel damage
+		    			e.setCancelled(true);
+		    			// cancel velocity
+		    			player.setVelocity(new Vector(0, 0, 0));
+		    			// teleport player
+		    			player.teleport(voidWorld.getVoidLocation());
+		    		}
+		    	}
+    	    }
+    	}
     }
     
     FileConfiguration getResourceConfig(String filename) {

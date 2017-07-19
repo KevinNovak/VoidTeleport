@@ -1,8 +1,13 @@
 package me.kevinnovak.voidteleport;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -67,13 +72,24 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 			// copy default file if doesnt exist
 			if (!worldFile.exists()) {
 				this.log("Creating default world file for \"" + worldName + "\".");
-				this.saveResource("worlds/default.yml", false);
-				File defaultWorldFile = new File(getDataFolder() + "/worlds/default.yml");
-				defaultWorldFile.renameTo(worldFile);
+				
+				FileConfiguration worldData = this.getResourceConfig("worlds/default.yml");
+				Location worldSpawn = world.getSpawnLocation();
+				worldData.set("voidSpawn.world", worldSpawn.getWorld().getName());
+				worldData.set("voidSpawn.x-Pos", worldSpawn.getBlockX());
+				worldData.set("voidSpawn.y-Pos", worldSpawn.getBlockY());
+				worldData.set("voidSpawn.z-Pos", worldSpawn.getBlockZ());
+				worldData.set("voidRandomSpawn.world", worldName);
+				
+				try {
+					worldData.save(worldFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			this.log("Loading world file for \"" + worldName + "\".");
-			FileConfiguration worldData = YamlConfiguration.loadConfiguration(worldFile);
 		}		
 	}
     
@@ -136,5 +152,18 @@ public class VoidTeleport extends JavaPlugin implements Listener{
         }
         
 		return false;
+    }
+    
+    FileConfiguration getResourceConfig(String filename) {
+		InputStream stream = this.getResource(filename);
+		Reader reader = new InputStreamReader(stream);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(reader);
+		try {
+			reader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return config;
     }
 }

@@ -2,13 +2,11 @@
 # Created by KevinNovak
 
 enabled: true
-
 voidSpawn:
   world: 'world'
   x-Pos: 0
   y-Pos: 100
   z-Pos: 0
-
 voidRandomSpawn:
   enabled: true
   world: 'world'
@@ -18,7 +16,6 @@ voidRandomSpawn:
   z-Range:
     min: -500
     max: 500
-
 dontSpawnOn:
 - 6
 - 8

@@ -3,25 +3,45 @@ package me.kevinnovak.voidteleport;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class VoidWorld {
 	public static int MAX_HEIGHT = 127;
 	public static int MIN_HEIGHT = 0;
-	private int maxSpawnAttempts;
 	
-	private String name;
+	private World world;
 	private Location spawn;
 	private boolean randomSpawnEnabled;
 	private World randomSpawnWorld;
 	private int minX, maxX, minZ, maxZ;
-	
 	private List<Integer> dontSpawnOn;
+	private int maxSpawnAttempts;
 	
-	VoidWorld() {
+	VoidWorld(World world, FileConfiguration worldData, int maxSpawnAttempts) {
+		this.world = world;
 		
+		String spawnWorldName = worldData.getString("voidSpawn.world");
+		World spawnWorld = Bukkit.getWorld(spawnWorldName);
+		int spawnXPos = worldData.getInt("voidSpawn.x-Pos");
+		int spawnYPos = worldData.getInt("voidSpawn.y-Pos");
+		int spawnZPos = worldData.getInt("voidSpawn.z-Pos");
+		this.spawn = new Location(spawnWorld, spawnXPos, spawnYPos, spawnZPos);
+		
+		this.randomSpawnEnabled = worldData.getBoolean("voidRandomSpawn.enabled");
+		String randomSpawnWorldName = worldData.getString("voidRandomSpawn.world");
+		this.randomSpawnWorld = Bukkit.getWorld(randomSpawnWorldName);
+		this.minX = worldData.getInt("voidRandomSpawn.x-Range.min");
+		this.maxX = worldData.getInt("voidRandomSpawn.x-Range.max");
+		this.minZ = worldData.getInt("voidRandomSpawn.z-Range.min");
+		this.maxZ = worldData.getInt("voidRandomSpawn.z-Range.max");
+		
+		this.dontSpawnOn = worldData.getIntegerList("dontSpawnOn");
+		
+		this.maxSpawnAttempts = maxSpawnAttempts;
     }
 	
 	@SuppressWarnings("deprecation")
@@ -76,12 +96,12 @@ public class VoidWorld {
     	return randLocation;
     }
 	
-	String getName() {
-		return this.name;
+	World getWorld() {
+		return this.world;
 	}
 	
-	void setName(String name) {
-		this.name = name;
+	void setName(World world) {
+		this.world = world;
 	}
 	
 	Location getSpawn() {

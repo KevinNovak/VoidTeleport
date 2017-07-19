@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,10 +20,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class VoidTeleport extends JavaPlugin implements Listener{
+	// Plugin
 	private PermissionManager perm = new PermissionManager();
 	private LanguageManager langMan = new LanguageManager(this);
 	private CommandManager cmdMan = new CommandManager(this);
 	private CommandMenu commandMenu = new CommandMenu(this.perm, this.langMan);
+	
+	private List<VoidWorld> voidWorlds = new ArrayList<VoidWorld>();
+	
+	// Config
+	private int maxSpawnAttempts;
 	
     // ======================
     // Enable
@@ -62,6 +70,7 @@ public class VoidTeleport extends JavaPlugin implements Listener{
     
 	void loadConfig() {
         this.log("Loading main config.");
+        this.maxSpawnAttempts = getConfig().getInt("maxSpawnAttempts");
     }
 	
 	void loadWorlds() {
@@ -89,7 +98,14 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 				}
 			}
 			
-			this.log("Loading world file for \"" + worldName + "\".");
+			if (worldFile.exists()) {
+				FileConfiguration worldData = YamlConfiguration.loadConfiguration(worldFile);
+				if (worldData.getBoolean("enabled")) {
+					this.log("Loading world file for \"" + worldName + "\".");
+					VoidWorld voidWorld = new VoidWorld(world, worldData, this.maxSpawnAttempts);
+					voidWorlds.add(voidWorld);
+				}
+			}
 		}		
 	}
     

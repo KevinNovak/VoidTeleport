@@ -1,0 +1,63 @@
+# World file for VoidTeleport
+# Created by KevinNovak
+
+enabled: true
+
+voidSpawn:
+  world: 'world'
+  x-Pos: 0
+  y-Pos: 100
+  z-Pos: 0
+
+voidRandomSpawn:
+  enabled: true
+  world: 'world'
+  x-Range:
+    min: -500
+    max: 500
+  z-Range:
+    min: -500
+    max: 500
+
+dontSpawnOn:
+- 6
+- 8
+- 9
+- 10
+- 11
+- 31
+- 32
+- 37
+- 38
+- 39
+- 40
+- 50
+- 51
+- 55
+- 59
+- 63
+- 65
+- 68
+- 69
+- 75
+- 76
+- 77
+- 83
+- 90
+- 104
+- 105
+- 106
+- 107
+- 115
+- 116
+- 117
+- 119
+- 127
+- 131
+- 132
+- 140
+- 141
+- 142
+- 143
+- 175
+- 209

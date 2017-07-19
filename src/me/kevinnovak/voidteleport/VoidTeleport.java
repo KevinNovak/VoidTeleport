@@ -1,6 +1,9 @@
 package me.kevinnovak.voidteleport;
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,6 +24,7 @@ public class VoidTeleport extends JavaPlugin implements Listener{
         this.loadConfig();
         this.loadLanguageFile();
         this.loadCommandsFile();
+        this.loadWorlds();
         this.registerEvents();
         this.log("Plugin enabled!");
     }
@@ -52,6 +56,18 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 	void loadConfig() {
         this.log("Loading main config.");
     }
+	
+	void loadWorlds() {
+		for (World world : Bukkit.getWorlds()) {
+			String worldName = world.getName();
+			File worldFile = new File(getDataFolder() + "/worlds/" + worldName + ".yml");
+			if (!worldFile.exists()) {
+				this.saveResource("worlds/default.yml", false);
+				File defaultWorldFile = new File(getDataFolder() + "/worlds/default.yml");
+				defaultWorldFile.renameTo(worldFile);
+			}
+		}		
+	}
     
     // ======================
     // Commands

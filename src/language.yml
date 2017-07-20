@@ -10,13 +10,14 @@ spawn:
 random: '&7You have been teleported to &6{X-POS}&7, &6{Y-POS}&7, &6{Z-POS}&7.'
 
 commandMenu:
-  header: ' &e-------- &6VoidTeleport  &e- &6Commands &e--------'
+  header: ' &e---------- &6VoidTeleport &e- &6Commands &e-----------'
   command:
-    spawn: '&b/vtp spawn &7- Teleport to the worlds spawn location.'
-    random: '&b/vtp random &7- Teleport to a random location in the world.'
+    setSpawn: '&b/vtp setspawn &7- Set worlds spawn to your location'
+    spawn: '&b/vtp spawn &7- Teleport to worlds spawn location.'
+    random: '&b/vtp random &7- Teleport to random location in world.'
   morePages: ' &7Type &6/vtp {PAGE} &7for more.'
   noCommands: ' &7You are not allowed to use commands.'
-  footer: ' &e----------------------------------------'
+  footer: ' &e-------------------------------------------'
   
 console:
   spawn: 'Teleported {PLAYER} from void in "{VOID-WORLD}" to spawn in "{WORLD}".'

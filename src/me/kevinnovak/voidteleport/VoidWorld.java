@@ -143,6 +143,7 @@ public class VoidWorld {
 	}
 	
 	void setSpawn(Location spawn) {
+		spawn.add(0.5, 0, 0.5);
 		this.spawn = spawn;
 	}
 	

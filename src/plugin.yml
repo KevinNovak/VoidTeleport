@@ -11,6 +11,9 @@ commands:
         aliases: [voidteleport]
 
 permissions:
+    voidteleport.command.setspawn:
+        description: Set the worlds spawn to your location.
+        default: op
     voidteleport.command.spawn:
         description: Teleport to the worlds spawn location.
         default: op

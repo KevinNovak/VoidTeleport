@@ -1,6 +1,11 @@
 # Commands file for VoidTeleport
 # Created by KevinNovak
 
+setSpawn:
+- 'setspawn'
+- 'set'
+- 'spawnset'
+
 spawn:
 - 'spawn'
 - 'tp'

@@ -148,6 +148,18 @@ public class VoidTeleport extends JavaPlugin implements Listener{
         		commandMenu.print(player, 1);
             	return true;
             } else if (args.length > 0) {
+            	for (String setSpawnCommand : cmdMan.setSpawnCommands) {
+            		if (args[0].equalsIgnoreCase(setSpawnCommand)) {
+            			if (player.hasPermission(perm.setSpawn)) {
+            				this.setVoidSpawn(player);
+                    		return true;
+            			} else {
+            				player.sendMessage(langMan.noPermission);
+            				return true;
+            			}
+                	}
+            	}
+            	
             	for (String spawnCommand : cmdMan.spawnCommands) {
             		if (args[0].equalsIgnoreCase(spawnCommand)) {
             			if (player.hasPermission(perm.spawn)) {
@@ -203,6 +215,43 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 		    		}
 		    	}
     	    }
+    	}
+    }
+    
+    void setVoidSpawn(Player player) {
+    	Location playerLocation = player.getLocation();
+    	World playerWorld = playerLocation.getWorld();
+    	String playerWorldName = playerWorld.getName();
+
+    	File worldFile = new File(getDataFolder() + "/worlds/" + playerWorldName + ".yml");
+    	if (worldFile.exists()) {
+    		int playerXPos = playerLocation.getBlockX();
+    		int playerYPos = playerLocation.getBlockY();
+    		int playerZPos = playerLocation.getBlockZ();
+    		float playerYaw = playerLocation.getYaw();
+    		float playerPitch = playerLocation.getPitch();
+    		
+    		// save new spawn to file
+    		FileConfiguration worldData = YamlConfiguration.loadConfiguration(worldFile);
+			worldData.set("worldSpawn.x-Pos", playerXPos);
+			worldData.set("worldSpawn.y-Pos", playerYPos);
+			worldData.set("worldSpawn.z-Pos", playerZPos);
+			worldData.set("worldSpawn.yaw", playerYaw);
+			worldData.set("worldSpawn.pitch", playerPitch);
+			
+			try {
+				worldData.save(worldFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// set already loaded spawn to new spawn
+	    	VoidWorld voidWorld = this.getVoidWorld(playerWorld);
+	    	Location spawnLocation = new Location(playerWorld, playerXPos, playerYPos, playerZPos, playerYaw, playerPitch);
+	    	voidWorld.setSpawn(spawnLocation);
+	    	
+	    	player.sendMessage("World Spawn Set");
     	}
     }
     

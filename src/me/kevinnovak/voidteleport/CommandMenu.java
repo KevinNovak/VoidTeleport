@@ -17,6 +17,10 @@ public class CommandMenu {
 	public List<String> getAllowedCommandLines(Player player) {
 		List<String> commandLines = new ArrayList<String>();
 		
+		if (player.hasPermission(perm.setSpawn)) {
+			commandLines.add(langMan.commandMenuCommandSetSpawn);
+		}
+		
 		if (player.hasPermission(perm.spawn)) {
 			commandLines.add(langMan.commandMenuCommandSpawn);
 		}

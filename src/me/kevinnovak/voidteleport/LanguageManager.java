@@ -14,7 +14,7 @@ public class LanguageManager {
 	public Boolean spawnEnabled;
 	public String spawnMessage;
 	public String random;
-	public String commandMenuHeader, commandMenuCommandSpawn, commandMenuCommandRandom, commandMenuMorePages, commandMenuNoCommands, commandMenuFooter;
+	public String commandMenuHeader, commandMenuCommandSetSpawn, commandMenuCommandSpawn, commandMenuCommandRandom, commandMenuMorePages, commandMenuNoCommands, commandMenuFooter;
 	public String consoleSpawn, consoleRandom;
 	
 	public LanguageManager(VoidTeleport plugin) {
@@ -38,6 +38,7 @@ public class LanguageManager {
         this.random = colorConv.convert(languageData.getString("random"));
         
     	this.commandMenuHeader = colorConv.convert(languageData.getString("commandMenu.header"));
+    	this.commandMenuCommandSetSpawn = colorConv.convert(languageData.getString("commandMenu.command.setSpawn"));
     	this.commandMenuCommandSpawn = colorConv.convert(languageData.getString("commandMenu.command.spawn"));
     	this.commandMenuCommandRandom = colorConv.convert(languageData.getString("commandMenu.command.random"));
     	this.commandMenuMorePages = colorConv.convert(languageData.getString("commandMenu.morePages"));

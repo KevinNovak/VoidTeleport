@@ -3,6 +3,12 @@
 
 noPermission: '&cYou are not permitted to do this!'
 
+teleporting: '&7Teleporting...'
+spawn:
+  enabled: true
+  message: '&&7You have been teleported to the world spawn.'
+random: '&7You have been teleported to &6{X-POS}&7, &6{Y-POS}&7, &6{Z-POS}&7.'
+
 commandMenu:
   header: ' &e-------- &6VoidTeleport  &e- &6Commands &e--------'
   command:

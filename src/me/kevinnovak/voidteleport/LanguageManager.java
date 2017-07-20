@@ -10,6 +10,10 @@ public class LanguageManager {
 	
 	public String consolePrefix = "[VoidTeleport] ";
 	public String noPermission;
+	public String teleporting;
+	public Boolean spawnEnabled;
+	public String spawnMessage;
+	public String random;
 	public String commandMenuHeader, commandMenuCommandSpawn, commandMenuCommandRandom, commandMenuMorePages, commandMenuNoCommands, commandMenuFooter;
 	
 	public LanguageManager(VoidTeleport plugin) {
@@ -26,6 +30,11 @@ public class LanguageManager {
         YamlConfiguration languageData = YamlConfiguration.loadConfiguration(languageFile);
         
         this.noPermission = colorConv.convert(languageData.getString("noPermission"));
+        
+        this.teleporting = colorConv.convert(languageData.getString("teleporting"));
+        this.spawnEnabled = languageData.getBoolean("spawn.enabled");
+        this.spawnMessage = colorConv.convert(languageData.getString("spawn.message"));
+        this.random = colorConv.convert(languageData.getString("random"));
         
     	this.commandMenuHeader = colorConv.convert(languageData.getString("commandMenu.header"));
     	this.commandMenuCommandSpawn = colorConv.convert(languageData.getString("commandMenu.command.spawn"));

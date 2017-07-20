@@ -187,8 +187,8 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 		    					if (toWorld.equals(voidToWorld.getWorld())) {
 		    		    			// cancel damage
 		    		    			e.setCancelled(true);
-		    		    			// cancel velocity
-		    		    			player.setVelocity(new Vector(0, 0, 0));
+		    		    			// cancel fall
+		    		    			player.setFallDistance(0);
 		    						if (voidWorld.getUseRandom()) {
 		    			    			// teleport player
 		    			    			player.teleport(voidToWorld.getRandomVoidLocation());

@@ -89,11 +89,10 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 				
 				FileConfiguration worldData = this.getResourceConfig("worlds/default.yml");
 				Location worldSpawn = world.getSpawnLocation();
-				worldData.set("voidSpawn.world", worldSpawn.getWorld().getName());
-				worldData.set("voidSpawn.x-Pos", worldSpawn.getBlockX());
-				worldData.set("voidSpawn.y-Pos", worldSpawn.getBlockY());
-				worldData.set("voidSpawn.z-Pos", worldSpawn.getBlockZ());
-				worldData.set("voidRandomSpawn.world", worldName);
+				worldData.set("teleportOutOfVoid.toWorld", worldSpawn.getWorld().getName());
+				worldData.set("worldSpawn.x-Pos", worldSpawn.getBlockX());
+				worldData.set("worldSpawn.y-Pos", worldSpawn.getBlockY());
+				worldData.set("worldSpawn.z-Pos", worldSpawn.getBlockZ());
 				
 				try {
 					worldData.save(worldFile);
@@ -105,11 +104,9 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 			
 			if (worldFile.exists()) {
 				FileConfiguration worldData = YamlConfiguration.loadConfiguration(worldFile);
-				if (worldData.getBoolean("enabled")) {
-					this.log("Loading world file for \"" + worldName + "\".");
-					VoidWorld voidWorld = new VoidWorld(world, worldData, this.maxSpawnAttempts);
-					voidWorlds.add(voidWorld);
-				}
+				this.log("Loading world file for \"" + worldName + "\".");
+				VoidWorld voidWorld = new VoidWorld(world, worldData, this.maxSpawnAttempts);
+				voidWorlds.add(voidWorld);
 			}
 		}		
 	}
@@ -184,12 +181,23 @@ public class VoidTeleport extends JavaPlugin implements Listener{
     		    World playerWorld = player.getLocation().getWorld();
 		    	for (VoidWorld voidWorld : this.voidWorlds) {
 		    		if (voidWorld.getWorld().equals(playerWorld)) {
-		    			// cancel damage
-		    			e.setCancelled(true);
-		    			// cancel velocity
-		    			player.setVelocity(new Vector(0, 0, 0));
-		    			// teleport player
-		    			player.teleport(voidWorld.getVoidLocation());
+		    			if (voidWorld.getEnabled()) {
+		    				World toWorld = voidWorld.getToWorld();
+		    				for (VoidWorld voidToWorld : this.voidWorlds) {
+		    					if (toWorld.equals(voidToWorld.getWorld())) {
+		    		    			// cancel damage
+		    		    			e.setCancelled(true);
+		    		    			// cancel velocity
+		    		    			player.setVelocity(new Vector(0, 0, 0));
+		    						if (voidWorld.getUseRandom()) {
+		    			    			// teleport player
+		    			    			player.teleport(voidToWorld.getRandomVoidLocation());
+		    						} else {
+		    							player.teleport(voidToWorld.getSpawn());
+		    						}
+		    					}
+		    				}
+		    			}
 		    		}
 		    	}
     	    }

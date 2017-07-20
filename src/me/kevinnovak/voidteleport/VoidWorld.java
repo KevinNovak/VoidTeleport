@@ -13,10 +13,11 @@ public class VoidWorld {
 	public static int MAX_HEIGHT = 127;
 	public static int MIN_HEIGHT = 0;
 	
+	private boolean enabled;
+	private World toWorld;
+	private boolean useRandom;
 	private World world;
 	private Location spawn;
-	private boolean randomSpawnEnabled;
-	private World randomSpawnWorld;
 	private int minX, maxX, minZ, maxZ;
 	private List<Integer> dontSpawnOn;
 	private int maxSpawnAttempts;
@@ -24,76 +25,103 @@ public class VoidWorld {
 	VoidWorld(World world, FileConfiguration worldData, int maxSpawnAttempts) {
 		this.world = world;
 		
-		String spawnWorldName = worldData.getString("voidSpawn.world");
-		World spawnWorld = Bukkit.getWorld(spawnWorldName);
-		int spawnXPos = worldData.getInt("voidSpawn.x-Pos");
-		int spawnYPos = worldData.getInt("voidSpawn.y-Pos");
-		int spawnZPos = worldData.getInt("voidSpawn.z-Pos");
-		this.spawn = new Location(spawnWorld, spawnXPos, spawnYPos, spawnZPos);
+		this.enabled = worldData.getBoolean("teleportOutOfVoid.enabled");
 		
-		this.randomSpawnEnabled = worldData.getBoolean("voidRandomSpawn.enabled");
-		String randomSpawnWorldName = worldData.getString("voidRandomSpawn.world");
-		this.randomSpawnWorld = Bukkit.getWorld(randomSpawnWorldName);
-		this.minX = worldData.getInt("voidRandomSpawn.x-Range.min");
-		this.maxX = worldData.getInt("voidRandomSpawn.x-Range.max");
-		this.minZ = worldData.getInt("voidRandomSpawn.z-Range.min");
-		this.maxZ = worldData.getInt("voidRandomSpawn.z-Range.max");
+		String toWorldName = worldData.getString("teleportOutOfVoid.toWorld");
+		this.toWorld = Bukkit.getWorld(toWorldName);
 		
-		this.dontSpawnOn = worldData.getIntegerList("dontSpawnOn");
+		this.useRandom = worldData.getBoolean("teleportOutOfVoid.useRandom");
+		
+		int spawnXPos = worldData.getInt("worldSpawn.x-Pos");
+		int spawnYPos = worldData.getInt("worldSpawn.y-Pos");
+		int spawnZPos = worldData.getInt("worldSpawn.z-Pos");
+		this.spawn = new Location(this.world, spawnXPos, spawnYPos, spawnZPos);
+		this.spawn.add(0.5, 0, 0.5);
+		
+		this.minX = worldData.getInt("worldRandomSpawn.x-Range.min");
+		this.maxX = worldData.getInt("worldRandomSpawn.x-Range.max");
+		this.minZ = worldData.getInt("worldRandomSpawn.z-Range.min");
+		this.maxZ = worldData.getInt("worldRandomSpawn.z-Range.max");
+		
+		this.dontSpawnOn = worldData.getIntegerList("worldSpawn.dontSpawnOn");
 		
 		this.maxSpawnAttempts = maxSpawnAttempts;
     }
 	
 	@SuppressWarnings("deprecation")
-	Location getVoidLocation() {
-		if (this.randomSpawnEnabled) {
-		   	Location randLocation;
-	    	
-	    	int attempt = 1;
-	    	while (attempt <= maxSpawnAttempts) {
-	    		randLocation = getRandomLocation();
-
-	    		while (attempt <= maxSpawnAttempts && randLocation.getBlockY() >= MIN_HEIGHT) {
-	        		int randX = randLocation.getBlockX();
-	        		int randY = randLocation.getBlockY();
-	        		int randZ = randLocation.getBlockZ();
-	        		
-	        		Material blockAboveMaterial = new Location(this.randomSpawnWorld, randX, randY+1, randZ).getBlock().getType();
-	        		Material blockBelowMaterial = new Location(this.randomSpawnWorld, randX, randY-1, randZ).getBlock().getType();
-	        		
-	    			if (randLocation.getBlock().getType() == Material.AIR) {
-	    				if (blockAboveMaterial == Material.AIR) {
-	    					if (blockBelowMaterial != Material.AIR) {
-	    						boolean forbidden = false;
-	    						for (Integer itemID : this.dontSpawnOn) {
-	    							if (blockBelowMaterial == Material.getMaterial(itemID)) {
-	    								forbidden = true;
-	    							}
-	    						}
-	    						if (!forbidden) {
-	        						return randLocation;
-	    						}
-	    					}
-	    				}
-	    			}
-	    			
-	    			randLocation.subtract(0, 1, 0);
-	    			attempt++;
-	    		}
-	    	}
-		}
+	Location getRandomVoidLocation() {
+	   	Location randLocation;
     	
+    	int attempt = 1;
+    	while (attempt <= maxSpawnAttempts) {
+    		randLocation = getRandomLocation();
+
+    		while (attempt <= maxSpawnAttempts && randLocation.getBlockY() >= MIN_HEIGHT) {
+        		int randX = randLocation.getBlockX();
+        		int randY = randLocation.getBlockY();
+        		int randZ = randLocation.getBlockZ();
+        		
+        		Material blockAboveMaterial = new Location(this.world, randX, randY+1, randZ).getBlock().getType();
+        		Material blockBelowMaterial = new Location(this.world, randX, randY-1, randZ).getBlock().getType();
+        		
+    			if (randLocation.getBlock().getType() == Material.AIR) {
+    				if (blockAboveMaterial == Material.AIR) {
+    					if (blockBelowMaterial != Material.AIR) {
+    						boolean forbidden = false;
+    						for (Integer itemID : this.dontSpawnOn) {
+    							if (blockBelowMaterial == Material.getMaterial(itemID)) {
+    								forbidden = true;
+    							}
+    						}
+    						if (!forbidden) {
+    							randLocation.add(0.5, 0, 0.5);
+        						return randLocation;
+    						}
+    					}
+    				}
+    			}
+    			
+    			randLocation.subtract(0, 1, 0);
+    			attempt++;
+    		}
+    	}
+    	Bukkit.getLogger().info("SPAWNING AT SPAWN");
     	return this.spawn;
     }
 	
     Location getRandomLocation() {
+    	Bukkit.getLogger().info("GETTING RANDOM LOCATION");
     	int randX = ThreadLocalRandom.current().nextInt(this.minX, this.maxX + 1);
     	int randY = MAX_HEIGHT;
     	int randZ = ThreadLocalRandom.current().nextInt(this.minZ, this.maxZ + 1);
   
-    	Location randLocation = new Location(this.randomSpawnWorld, randX, randY, randZ);
+    	Location randLocation = new Location(this.world, randX, randY, randZ);
     	
     	return randLocation;
+    }
+    
+    boolean getEnabled() {
+    	return this.enabled;
+    }
+    
+    void setEnable(boolean enabled) {
+    	this.enabled = enabled;
+    }
+    
+    World getToWorld() {
+    	return this.toWorld;
+    }
+    
+    void setToWorld(World toWorld) {
+    	this.toWorld = toWorld;
+    }
+    
+    boolean getUseRandom() {
+    	return this.useRandom;
+    }
+    
+    void setUseRandom(boolean useRandom) {
+    	this.useRandom = useRandom;
     }
 	
 	World getWorld() {
@@ -110,22 +138,6 @@ public class VoidWorld {
 	
 	void setSpawn(Location spawn) {
 		this.spawn = spawn;
-	}
-	
-	boolean getRandomSpawnEnabled() {
-		return this.randomSpawnEnabled;
-	}
-	
-	void setRandomSpawnEnabled(boolean randomSpawnEnabled) {
-		this.randomSpawnEnabled = randomSpawnEnabled;
-	}
-	
-	World getRandomSpawnWorld() {
-		return this.randomSpawnWorld;
-	}
-	
-	void setRandomSpawnWorld(World randomSpawnWorld) {
-		this.randomSpawnWorld = randomSpawnWorld;
 	}
 	
 	int getMinX() {

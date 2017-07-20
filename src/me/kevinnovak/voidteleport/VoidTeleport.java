@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class VoidTeleport extends JavaPlugin implements Listener{
 	// Plugin
@@ -44,9 +45,8 @@ public class VoidTeleport extends JavaPlugin implements Listener{
         this.loadConfig();
         this.loadLanguageFile();
         this.loadCommandsFile();
-        this.loadWorlds();
+        this.startLoadWorlds();
         this.registerEvents();
-        this.log("Plugin enabled!");
     }
     
     // ======================
@@ -76,6 +76,17 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 	void loadConfig() {
         this.log("Loading main config.");
         this.maxSpawnAttempts = getConfig().getInt("maxSpawnAttempts");
+    }
+	
+    public void startLoadWorlds() {
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(this, new Runnable() {
+        	@Override
+            public void run() {
+        		loadWorlds();
+        	    log("Plugin enabled!");
+            }
+        }, 0L);
     }
 	
 	void loadWorlds() {

@@ -17,3 +17,8 @@ commandMenu:
   morePages: ' &7Type &6/vtp {PAGE} &7for more.'
   noCommands: ' &7You are not allowed to use commands.'
   footer: ' &e----------------------------------------'
+  
+console:
+  spawn: 'Teleported {PLAYER} from void in "{VOID-WORLD}" to spawn in "{WORLD}".'
+  random: 'Teleported {PLAYER} from void in "{VOID-WORLD}" to {X-POS}, {Y-POS}, {Z-POS} in "{WORLD}"'
+  

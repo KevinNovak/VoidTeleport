@@ -205,9 +205,16 @@ public class VoidTeleport extends JavaPlugin implements Listener{
     }
     
     void teleportPlayerSpawn(Player player, VoidWorld voidWorld) {
+    	String currentWorld = player.getWorld().getName();
+    	
 		player.setFallDistance(0);
 		player.sendMessage(langMan.teleporting);
 		player.teleport(voidWorld.getSpawn());
+		
+		this.log(langMan.consoleSpawn
+				.replace("{PLAYER}", player.getName())
+				.replace("{VOID-WORLD}", currentWorld)
+				.replace("{WORLD}", voidWorld.getWorld().getName()));
 		
 		if (langMan.spawnEnabled) {
 			player.sendMessage(langMan.spawnMessage);
@@ -215,6 +222,8 @@ public class VoidTeleport extends JavaPlugin implements Listener{
     }
     
     void teleportPlayerRandom(Player player, VoidWorld voidWorld) {
+    	String currentWorld = player.getWorld().getName();
+    	
 		Location tpLocation = voidWorld.getRandomVoidLocation();
 		// add in pitch and yaw of player
 		tpLocation = new Location(tpLocation.getWorld(), tpLocation.getX(), tpLocation.getY(), tpLocation.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
@@ -224,11 +233,31 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 		player.teleport(tpLocation);
 		
 		if (tpLocation.equals(voidWorld.getSpawn())) {
+			this.log(langMan.consoleSpawn
+					.replace("{PLAYER}", player.getName())
+					.replace("{VOID-WORLD}", currentWorld)
+					.replace("{WORLD}", voidWorld.getWorld().getName()));
+			
 			if (langMan.spawnEnabled) {
 				player.sendMessage(langMan.spawnMessage);
 			}
 		} else {
-			player.sendMessage(langMan.random.replace("{X-POS}", Integer.toString(tpLocation.getBlockX())).replace("{Y-POS}", Integer.toString(tpLocation.getBlockY())).replace("{Z-POS}", Integer.toString(tpLocation.getBlockZ())));
+			String xPos = Integer.toString(tpLocation.getBlockX());
+			String yPos = Integer.toString(tpLocation.getBlockY());
+			String zPos = Integer.toString(tpLocation.getBlockZ());
+			
+			this.log(langMan.consoleRandom
+					.replace("{PLAYER}", player.getName())
+					.replace("{VOID-WORLD}", currentWorld)
+					.replace("{X-POS}", xPos)
+					.replace("{Y-POS}", yPos)
+					.replace("{Z-POS}", zPos)
+					.replace("{WORLD}", voidWorld.getWorld().getName()));
+			
+			player.sendMessage(langMan.random
+					.replace("{X-POS}", xPos)
+					.replace("{Y-POS}", yPos)
+					.replace("{Z-POS}", zPos));
 		}
     }
     

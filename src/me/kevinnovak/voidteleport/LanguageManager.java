@@ -10,6 +10,7 @@ public class LanguageManager {
 	
 	public String consolePrefix = "[VoidTeleport] ";
 	public String noPermission;
+	public String setSpawn;
 	public String teleporting;
 	public Boolean spawnEnabled;
 	public String spawnMessage;
@@ -32,6 +33,7 @@ public class LanguageManager {
         
         this.noPermission = colorConv.convert(languageData.getString("noPermission"));
         
+        this.setSpawn = colorConv.convert(languageData.getString("setSpawn"));
         this.teleporting = colorConv.convert(languageData.getString("teleporting"));
         this.spawnEnabled = languageData.getBoolean("spawn.enabled");
         this.spawnMessage = colorConv.convert(languageData.getString("spawn.message"));

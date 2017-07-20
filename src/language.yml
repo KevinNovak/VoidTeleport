@@ -3,6 +3,7 @@
 
 noPermission: '&cYou are not permitted to do this!'
 
+setSpawn: '&7World spawn location set.'
 teleporting: '&6Teleporting...'
 spawn:
   enabled: false

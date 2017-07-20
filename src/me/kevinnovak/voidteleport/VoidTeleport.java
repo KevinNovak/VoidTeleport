@@ -251,7 +251,7 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 	    	Location spawnLocation = new Location(playerWorld, playerXPos, playerYPos, playerZPos, playerYaw, playerPitch);
 	    	voidWorld.setSpawn(spawnLocation);
 	    	
-	    	player.sendMessage("World Spawn Set");
+	    	player.sendMessage(langMan.setSpawn);
     	}
     }
     

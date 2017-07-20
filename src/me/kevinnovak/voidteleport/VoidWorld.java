@@ -93,7 +93,10 @@ public class VoidWorld {
     Location getRandomLocation() {
     	//Bukkit.getLogger().info("GETTING RANDOM LOCATION");
     	int randX = ThreadLocalRandom.current().nextInt(this.minX, this.maxX + 1);
-    	int randY = ThreadLocalRandom.current().nextInt(this.minY, this.maxY + 1);
+    	// TOP-DOWN:
+    	int randY = this.maxY;
+    	// RANDOM-DOWN:
+    	//int randY = ThreadLocalRandom.current().nextInt(this.minY, this.maxY + 1);
     	int randZ = ThreadLocalRandom.current().nextInt(this.minZ, this.maxZ + 1);
   
     	Location randLocation = new Location(this.world, randX, randY, randZ);

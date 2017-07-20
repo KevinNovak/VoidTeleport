@@ -216,7 +216,9 @@ public class VoidTeleport extends JavaPlugin implements Listener{
     
     void teleportPlayerRandom(Player player, VoidWorld voidWorld) {
 		Location tpLocation = voidWorld.getRandomVoidLocation();
-
+		// add in pitch and yaw of player
+		tpLocation = new Location(tpLocation.getWorld(), tpLocation.getX(), tpLocation.getY(), tpLocation.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
+		
 		player.setFallDistance(0);
 		player.sendMessage(langMan.teleporting);
 		player.teleport(tpLocation);

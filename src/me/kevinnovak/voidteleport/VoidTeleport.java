@@ -136,8 +136,8 @@ public class VoidTeleport extends JavaPlugin implements Listener{
             	for (String spawnCommand : cmdMan.spawnCommands) {
             		if (args[0].equalsIgnoreCase(spawnCommand)) {
             			if (player.hasPermission(perm.spawn)) {
-            				
-            				// TO-DO: teleport player
+            				VoidWorld voidWorld = this.getVoidWorld(player.getWorld());
+            				player.teleport(voidWorld.getSpawn());
             				player.sendMessage("Teleported to Spawn");
             				
                     		return true;
@@ -151,8 +151,8 @@ public class VoidTeleport extends JavaPlugin implements Listener{
             	for (String randomCommand : cmdMan.randomCommands) {
             		if (args[0].equalsIgnoreCase(randomCommand)) {
             			if (player.hasPermission(perm.random)) {
-            				
-            				// TO-DO: teleport player
+            				VoidWorld voidWorld = this.getVoidWorld(player.getWorld());
+            				player.teleport(voidWorld.getRandomVoidLocation());
             				player.sendMessage("Teleported to Random");
             				
                     		return true;
@@ -182,25 +182,31 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 		    		if (voidWorld.getWorld().equals(playerWorld)) {
 		    			if (voidWorld.getEnabled()) {
 		    				World toWorld = voidWorld.getToWorld();
-		    				for (VoidWorld voidToWorld : this.voidWorlds) {
-		    					if (toWorld.equals(voidToWorld.getWorld())) {
-		    		    			// cancel damage
-		    		    			e.setCancelled(true);
-		    		    			// cancel fall
-		    		    			player.setFallDistance(0);
-		    						if (voidWorld.getUseRandom()) {
-		    			    			// teleport player
-		    			    			player.teleport(voidToWorld.getRandomVoidLocation());
-		    						} else {
-		    							player.teleport(voidToWorld.getSpawn());
-		    						}
-		    					}
-		    				}
+		    				VoidWorld toVoidWorld = this.getVoidWorld(toWorld);
+    		    			// cancel damage
+    		    			e.setCancelled(true);
+    		    			// cancel fall
+    		    			player.setFallDistance(0);
+    						if (voidWorld.getUseRandom()) {
+    			    			// teleport player
+    			    			player.teleport(toVoidWorld.getRandomVoidLocation());
+    						} else {
+    							player.teleport(toVoidWorld.getSpawn());
+    						}
 		    			}
 		    		}
 		    	}
     	    }
     	}
+    }
+    
+    VoidWorld getVoidWorld(World world) {
+    	for (VoidWorld voidWorld : this.voidWorlds) {
+    		if (voidWorld.getWorld().equals(world)) {
+    			return voidWorld;
+    		}
+    	}
+    	return null;
     }
     
     FileConfiguration getResourceConfig(String filename) {

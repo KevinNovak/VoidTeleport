@@ -14,7 +14,7 @@ worldRandomSpawn:
     min: -500
     max: 500
   y-Range:
-    min: 63
+    min: 65
     max: 145
   z-Range:
     min: -500

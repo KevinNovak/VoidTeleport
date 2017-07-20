@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -92,6 +93,18 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 				worldData.set("worldSpawn.x-Pos", worldSpawn.getBlockX());
 				worldData.set("worldSpawn.y-Pos", worldSpawn.getBlockY());
 				worldData.set("worldSpawn.z-Pos", worldSpawn.getBlockZ());
+				
+				if (world.getEnvironment() == Environment.NETHER) {
+					worldData.set("worldRandomSpawn.y-Range.min", 5);
+					worldData.set("worldRandomSpawn.y-Range.max", 120);
+				} else if (world.getEnvironment() == Environment.THE_END) {
+					worldData.set("worldRandomSpawn.x-Range.min", -100);
+					worldData.set("worldRandomSpawn.x-Range.max", 100);
+					worldData.set("worldRandomSpawn.y-Range.min", 10);
+					worldData.set("worldRandomSpawn.y-Range.max", 100);
+					worldData.set("worldRandomSpawn.z-Range.min", -100);
+					worldData.set("worldRandomSpawn.z-Range.max", 100);
+				}
 				
 				try {
 					worldData.save(worldFile);

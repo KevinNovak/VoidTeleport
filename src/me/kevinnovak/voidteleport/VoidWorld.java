@@ -10,15 +10,13 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class VoidWorld {
-	public static int MAX_HEIGHT = 127;
-	public static int MIN_HEIGHT = 0;
 	
 	private boolean enabled;
 	private World toWorld;
 	private boolean useRandom;
 	private World world;
 	private Location spawn;
-	private int minX, maxX, minZ, maxZ;
+	private int minX, maxX, minY, maxY, minZ, maxZ;
 	private List<Integer> dontSpawnOn;
 	private int maxSpawnAttempts;
 	
@@ -40,6 +38,8 @@ public class VoidWorld {
 		
 		this.minX = worldData.getInt("worldRandomSpawn.x-Range.min");
 		this.maxX = worldData.getInt("worldRandomSpawn.x-Range.max");
+		this.minY = worldData.getInt("worldRandomSpawn.y-Range.min");
+		this.maxY = worldData.getInt("worldRandomSpawn.y-Range.max");
 		this.minZ = worldData.getInt("worldRandomSpawn.z-Range.min");
 		this.maxZ = worldData.getInt("worldRandomSpawn.z-Range.max");
 		
@@ -56,7 +56,7 @@ public class VoidWorld {
     	while (attempt <= maxSpawnAttempts) {
     		randLocation = getRandomLocation();
 
-    		while (attempt <= maxSpawnAttempts && randLocation.getBlockY() >= MIN_HEIGHT) {
+    		while (attempt <= maxSpawnAttempts && randLocation.getBlockY() >= this.minY) {
         		int randX = randLocation.getBlockX();
         		int randY = randLocation.getBlockY();
         		int randZ = randLocation.getBlockZ();
@@ -75,6 +75,7 @@ public class VoidWorld {
     						}
     						if (!forbidden) {
     							randLocation.add(0.5, 0, 0.5);
+    							Bukkit.getLogger().info("attempts: " + attempt);
         						return randLocation;
     						}
     					}
@@ -90,9 +91,9 @@ public class VoidWorld {
     }
 	
     Location getRandomLocation() {
-    	Bukkit.getLogger().info("GETTING RANDOM LOCATION");
+    	//Bukkit.getLogger().info("GETTING RANDOM LOCATION");
     	int randX = ThreadLocalRandom.current().nextInt(this.minX, this.maxX + 1);
-    	int randY = MAX_HEIGHT;
+    	int randY = ThreadLocalRandom.current().nextInt(this.minY, this.maxY + 1);
     	int randZ = ThreadLocalRandom.current().nextInt(this.minZ, this.maxZ + 1);
   
     	Location randLocation = new Location(this.world, randX, randY, randZ);

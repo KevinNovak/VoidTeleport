@@ -2,7 +2,7 @@
 # Created by KevinNovak
 
 teleportOutOfVoid:
-  enabled: true
+  enabled: false
   toWorld: 'world'
   useRandom: false
 worldSpawn:

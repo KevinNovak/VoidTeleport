@@ -93,6 +93,8 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 				worldData.set("worldSpawn.x-Pos", worldSpawn.getBlockX());
 				worldData.set("worldSpawn.y-Pos", worldSpawn.getBlockY());
 				worldData.set("worldSpawn.z-Pos", worldSpawn.getBlockZ());
+				worldData.set("worldSpawn.yaw", worldSpawn.getYaw());
+				worldData.set("worldSpawn.pitch", worldSpawn.getPitch());
 				
 				if (world.getEnvironment() == Environment.NETHER) {
 					worldData.set("worldRandomSpawn.y-Range.min", 5);

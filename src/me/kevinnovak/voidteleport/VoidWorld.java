@@ -33,7 +33,9 @@ public class VoidWorld {
 		int spawnXPos = worldData.getInt("worldSpawn.x-Pos");
 		int spawnYPos = worldData.getInt("worldSpawn.y-Pos");
 		int spawnZPos = worldData.getInt("worldSpawn.z-Pos");
-		this.spawn = new Location(this.world, spawnXPos, spawnYPos, spawnZPos);
+		float spawnYaw = (float) worldData.getDouble("worldSpawn.yaw");
+		float spawnPitch = (float) worldData.getDouble("worldSpawn.pitch");
+		this.spawn = new Location(this.world, spawnXPos, spawnYPos, spawnZPos, spawnYaw, spawnPitch);
 		this.spawn.add(0.5, 0, 0.5);
 		
 		this.minX = worldData.getInt("worldRandomSpawn.x-Range.min");

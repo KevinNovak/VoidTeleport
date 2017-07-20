@@ -149,10 +149,7 @@ public class VoidTeleport extends JavaPlugin implements Listener{
             	for (String spawnCommand : cmdMan.spawnCommands) {
             		if (args[0].equalsIgnoreCase(spawnCommand)) {
             			if (player.hasPermission(perm.spawn)) {
-            				VoidWorld voidWorld = this.getVoidWorld(player.getWorld());
-            				player.teleport(voidWorld.getSpawn());
-            				player.sendMessage("Teleported to Spawn");
-            				
+            				this.teleportPlayerSpawn(player, this.getVoidWorld(player.getWorld()));
                     		return true;
             			} else {
             				player.sendMessage(langMan.noPermission);
@@ -164,10 +161,7 @@ public class VoidTeleport extends JavaPlugin implements Listener{
             	for (String randomCommand : cmdMan.randomCommands) {
             		if (args[0].equalsIgnoreCase(randomCommand)) {
             			if (player.hasPermission(perm.random)) {
-            				VoidWorld voidWorld = this.getVoidWorld(player.getWorld());
-            				player.teleport(voidWorld.getRandomVoidLocation());
-            				player.sendMessage("Teleported to Random");
-            				
+            				this.teleportPlayerRandom(player, this.getVoidWorld(player.getWorld()));
                     		return true;
             			} else {
             				player.sendMessage(langMan.noPermission);
@@ -198,19 +192,42 @@ public class VoidTeleport extends JavaPlugin implements Listener{
 		    				VoidWorld toVoidWorld = this.getVoidWorld(toWorld);
     		    			// cancel damage
     		    			e.setCancelled(true);
-    		    			// cancel fall
-    		    			player.setFallDistance(0);
     						if (voidWorld.getUseRandom()) {
-    			    			// teleport player
-    			    			player.teleport(toVoidWorld.getRandomVoidLocation());
+    							this.teleportPlayerRandom(player, toVoidWorld);
     						} else {
-    							player.teleport(toVoidWorld.getSpawn());
+    							this.teleportPlayerSpawn(player, toVoidWorld);
     						}
 		    			}
 		    		}
 		    	}
     	    }
     	}
+    }
+    
+    void teleportPlayerSpawn(Player player, VoidWorld voidWorld) {
+		player.setFallDistance(0);
+		player.sendMessage(langMan.teleporting);
+		player.teleport(voidWorld.getSpawn());
+		
+		if (langMan.spawnEnabled) {
+			player.sendMessage(langMan.spawnMessage);
+		}
+    }
+    
+    void teleportPlayerRandom(Player player, VoidWorld voidWorld) {
+		Location tpLocation = voidWorld.getRandomVoidLocation();
+
+		player.setFallDistance(0);
+		player.sendMessage(langMan.teleporting);
+		player.teleport(tpLocation);
+		
+		if (tpLocation.equals(voidWorld.getSpawn())) {
+			if (langMan.spawnEnabled) {
+				player.sendMessage(langMan.spawnMessage);
+			}
+		} else {
+			player.sendMessage(langMan.random.replace("{X-POS}", Integer.toString(tpLocation.getBlockX())).replace("{Y-POS}", Integer.toString(tpLocation.getBlockY())).replace("{Z-POS}", Integer.toString(tpLocation.getBlockZ())));
+		}
     }
     
     VoidWorld getVoidWorld(World world) {

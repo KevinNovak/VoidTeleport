@@ -43,7 +43,7 @@ public class VoidWorld {
 		this.minZ = worldData.getInt("worldRandomSpawn.z-Range.min");
 		this.maxZ = worldData.getInt("worldRandomSpawn.z-Range.max");
 		
-		this.dontSpawnOn = worldData.getIntegerList("worldSpawn.dontSpawnOn");
+		this.dontSpawnOn = worldData.getIntegerList("worldRandomSpawn.dontSpawnOn");
 		
 		this.maxSpawnAttempts = maxSpawnAttempts;
     }
